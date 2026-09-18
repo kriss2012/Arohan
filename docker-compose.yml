@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  isdp-db:
+    image: postgres:16-alpine
+    container_name: isdp_local_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: isdp_admin
+      POSTGRES_PASSWORD: isdp_local_secure_password_2026
+      POSTGRES_DB: isdp_campus_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - isdp_db_data:/var/lib/postgresql/data
+    networks:
+      - isdp_network
+
+  isdp-redis:
+    image: redis:7-alpine
+    container_name: isdp_local_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - isdp_redis_data:/data
+    networks:
+      - isdp_network
+
+  isdp-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: isdp_local_backend
+    restart: unless-stopped
+    depends_on:
+      - isdp-db
+      - isdp-redis
+    environment:
+      DATABASE_URL: postgresql+asyncpg://isdp_admin:isdp_local_secure_password_2026@isdp-db:5432/isdp_campus_db
+      REDIS_URL: redis://isdp-redis:6379/0
+      STORAGE_ROOT: /app/local_storage
+      BACKUP_ROOT: /app/local_storage/backups
+      ENVIRONMENT: production
+    ports:
+      - "8000:8000"
+    volumes:
+      - isdp_storage_data:/app/local_storage
+    networks:
+      - isdp_network
+
+volumes:
+  isdp_db_data:
+  isdp_redis_data:
+  isdp_storage_data:
+
+networks:
+  isdp_network:
+    driver: bridge
