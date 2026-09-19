@@ -20,12 +20,13 @@ os.chdir(RUN_DIR)
 if BASE_DIR not in sys.path:
     sys.path.insert(0, BASE_DIR)
 
-HOST = "127.0.0.1"
+HOST = "0.0.0.0"
+LOCAL_HOST = "127.0.0.1"
 PORT = 8000
 
 def is_port_in_use(port: int) -> bool:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        return s.connect_ex((HOST, port)) == 0
+        return s.connect_ex((LOCAL_HOST, port)) == 0
 
 def find_available_port(start_port: int = 8000) -> int:
     port = start_port
@@ -53,7 +54,7 @@ def run_server(port: int):
 
 def wait_for_server(port: int, timeout: float = 15.0) -> bool:
     start_time = time.time()
-    url = f"http://{HOST}:{port}/health"
+    url = f"http://{LOCAL_HOST}:{port}/health"
     while time.time() - start_time < timeout:
         try:
             with urllib.request.urlopen(url, timeout=1.0) as resp:
@@ -118,7 +119,7 @@ def main():
         # Check if it's already our healthy server
         if wait_for_server(PORT, timeout=1.0):
             print(f"Server already running on port {PORT}, launching window...")
-            open_app_window(f"http://{HOST}:{PORT}")
+            open_app_window(f"http://{LOCAL_HOST}:{PORT}")
             return
         else:
             PORT = find_available_port(8001)
@@ -131,7 +132,7 @@ def main():
     if not wait_for_server(PORT, timeout=20.0):
         print("Warning: Server took longer to respond. Opening window now...")
 
-    target_url = f"http://{HOST}:{PORT}"
+    target_url = f"http://{LOCAL_HOST}:{PORT}"
     print(f"Arohan ISDP Platform ready at {target_url}")
     open_app_window(target_url)
 
