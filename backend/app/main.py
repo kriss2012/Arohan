@@ -78,6 +78,7 @@ async def health_check():
 # Mount static frontend build if present (for unified production & desktop packaging)
 import os
 import sys
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 def get_frontend_dist():
@@ -92,5 +93,36 @@ def get_frontend_dist():
 
 dist_dir = get_frontend_dist()
 if dist_dir:
-    app.mount("/", StaticFiles(directory=dist_dir, html=True), name="frontend")
+    assets_dir = os.path.join(dist_dir, "assets")
+    if os.path.exists(assets_dir):
+        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
+    @app.get("/")
+    async def serve_root():
+        index_path = os.path.join(dist_dir, "index.html")
+        if os.path.isfile(index_path):
+            return FileResponse(index_path)
+        return Response(content="Frontend build index.html not found", status_code=404)
+
+    @app.get("/{full_path:path}")
+    async def serve_spa(full_path: str):
+        # Do not intercept API, health, or swagger docs
+        if (
+            full_path.startswith("api/") 
+            or full_path == "api" 
+            or full_path.startswith("docs") 
+            or full_path.startswith("redoc")
+            or full_path == "openapi.json"
+        ):
+            return Response(status_code=404)
+        
+        target_file = os.path.join(dist_dir, full_path)
+        if os.path.isfile(target_file):
+            return FileResponse(target_file)
+        
+        index_path = os.path.join(dist_dir, "index.html")
+        if os.path.isfile(index_path):
+            return FileResponse(index_path)
+        return Response(status_code=404)
+
 
