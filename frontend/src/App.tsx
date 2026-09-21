@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { 
-  GraduationCap, LayoutDashboard, BookOpen, Award, Users, 
-  ShieldCheck, Briefcase, LogOut, Clock, Brain, UserCheck, 
+import {
+  GraduationCap, LayoutDashboard, BookOpen, Award, Users,
+  ShieldCheck, Briefcase, LogOut, Clock, Brain, UserCheck,
   ShieldAlert, KeyRound, Shield, Settings, Menu, X
 } from "lucide-react";
 import { api } from "./services/api";
@@ -145,17 +145,17 @@ export const App: React.FC = () => {
   return (
     <div className="app-container">
       {/* Mobile Drawer Backdrop */}
-      <div 
-        className={`sidebar-backdrop ${isMobileNavOpen ? "active" : ""}`} 
-        onClick={() => setIsMobileNavOpen(false)} 
-        aria-hidden="true" 
+      <div
+        className={`sidebar-backdrop ${isMobileNavOpen ? "active" : ""}`}
+        onClick={() => setIsMobileNavOpen(false)}
+        aria-hidden="true"
       />
 
       {/* Left Institutional Sidebar / Mobile Slide-Over Drawer */}
       <aside className={`sidebar ${isMobileNavOpen ? "mobile-open" : ""}`} aria-label="Main Navigation">
         <div className="sidebar-header" style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: "20px 16px 16px", position: "relative" }}>
           {isMobileNavOpen && (
-            <button 
+            <button
               onClick={() => setIsMobileNavOpen(false)}
               style={{
                 position: "absolute", top: 12, right: 12,
@@ -168,11 +168,11 @@ export const App: React.FC = () => {
               <X size={18} />
             </button>
           )}
-          <img 
-            src="/logo.png" 
-            alt="AROHAN Logo" 
-            className="brand-logo-img" 
-            style={{ marginBottom: 12 }} 
+          <img
+            src="/logo.png"
+            alt="AROHAN Logo"
+            className="brand-logo-img"
+            style={{ marginBottom: 12 }}
           />
           <div className="brand-badge" style={{ marginBottom: 4 }}>
             <GraduationCap size={14} /> IMRD SHIRPUR
@@ -183,19 +183,19 @@ export const App: React.FC = () => {
 
         <nav className="nav-menu">
           <div className="nav-section-title">Student Corner</div>
-          <button 
+          <button
             className={`nav-item ${activeTab === "dashboard" ? "active" : ""}`}
             onClick={() => handleTabSelect("dashboard")}
           >
             <LayoutDashboard size={18} /> Command Center
           </button>
-          <button 
+          <button
             className={`nav-item ${activeTab === "curriculum" ? "active" : ""}`}
             onClick={() => handleTabSelect("curriculum")}
           >
             <BookOpen size={18} /> Curriculum Syllabus
           </button>
-          <button 
+          <button
             className={`nav-item ${activeTab === "placement" ? "active" : ""}`}
             onClick={() => handleTabSelect("placement")}
           >
@@ -204,7 +204,7 @@ export const App: React.FC = () => {
 
           <div className="nav-section-title">Faculty & Administration</div>
           {isFaculty && (
-            <button 
+            <button
               className={`nav-item ${activeTab === "faculty" ? "active" : ""}`}
               onClick={() => handleTabSelect("faculty")}
             >
@@ -213,7 +213,7 @@ export const App: React.FC = () => {
           )}
 
           {isExamController && (
-            <button 
+            <button
               className={`nav-item ${activeTab === "exam-controller" ? "active" : ""}`}
               onClick={() => handleTabSelect("exam-controller")}
             >
@@ -222,7 +222,7 @@ export const App: React.FC = () => {
           )}
 
           {isAdmin && (
-            <button 
+            <button
               className={`nav-item ${activeTab === "admin" ? "active" : ""}`}
               onClick={() => handleTabSelect("admin")}
             >
@@ -232,13 +232,13 @@ export const App: React.FC = () => {
 
           {/* Quick Account Controls for Mobile */}
           <div className="nav-section-title" style={{ marginTop: 12 }}>Account & Security</div>
-          <button 
+          <button
             className="nav-item"
             onClick={() => { setIsMobileNavOpen(false); setIsChangePasswordOpen(true); }}
           >
             <KeyRound size={18} /> Change Password
           </button>
-          <button 
+          <button
             className="nav-item"
             onClick={() => { setIsMobileNavOpen(false); handleLogout(); }}
             style={{ color: "var(--imrd-ruby-border)" }}
@@ -302,7 +302,7 @@ export const App: React.FC = () => {
         {/* Top Navbar */}
         <header className="top-navbar">
           <div className="top-navbar-left">
-            <button 
+            <button
               className="mobile-nav-toggle"
               onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
               aria-label={isMobileNavOpen ? "Close navigation drawer" : "Open navigation drawer"}
@@ -310,10 +310,10 @@ export const App: React.FC = () => {
             >
               {isMobileNavOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
-            <img 
-              src="/logo.png" 
-              alt="AROHAN Logo" 
-              style={{ width: 34, height: 34, borderRadius: 8, objectFit: "contain", background: "#ffffff", padding: 2, boxShadow: "0 2px 6px rgba(0,0,0,0.15)" }} 
+            <img
+              src="/logo.png"
+              alt="AROHAN Logo"
+              style={{ width: 34, height: 34, borderRadius: 8, objectFit: "contain", background: "#ffffff", padding: 2, boxShadow: "0 2px 6px rgba(0,0,0,0.15)" }}
             />
             <div className="academic-badge">
               <ShieldCheck size={14} /> <span><span className="hide-on-mobile">RC Patel Educational Trust's </span>IMRD</span>
@@ -355,9 +355,9 @@ export const App: React.FC = () => {
             <button
               className="btn btn-secondary"
               onClick={handleLogout}
-              style={{ 
+              style={{
                 fontSize: 12, padding: "6px 10px", display: "flex", alignItems: "center", gap: 6,
-                color: "var(--imrd-ruby)", borderColor: "var(--imrd-ruby-border)" 
+                color: "var(--imrd-ruby)", borderColor: "var(--imrd-ruby-border)"
               }}
               title="Secure Logout"
             >
